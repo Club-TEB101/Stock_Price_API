@@ -74,7 +74,7 @@ class TWSEFetcher(BaseFetcher):
         else:
             data['data'] = []
             
-        time.sleep(random.uniform(5,10))
+        time.sleep(random.uniform(2,8))
         return data
 
     def _make_datatuple(self, data):
