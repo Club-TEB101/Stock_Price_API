@@ -19,8 +19,14 @@ try:
 except ImportError:
     JSONDecodeError = ValueError
 
+ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36'
 
-headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
+headers={'Connection': 'keep-alive',
+         'Referer': 'https://www.twse.com.tw/zh/page/trading/exchange/STOCK_DAY.html',
+         'Sec-Fetch-Site': 'same-origin'
+         'User-Agent': ua,
+         'X-Requested-With': 'XMLHttpRequest'}
+#print(headers)
 
 
 TWSE_BASE_URL = 'http://www.twse.com.tw/'
@@ -52,29 +58,35 @@ class TWSEFetcher(BaseFetcher):
         pass
 
     def fetch(self, year: int, month: int, sid: str, retry: int=5):
-        params = {'date': '%d%02d01' % (year, month), 'stockNo': sid}
+        params = {'response': 'json', 'date': '%d%02d01' % (year, month), 'stockNo': sid}
+        
         for retry_i in range(retry):
-            r = requests.get(self.REPORT_URL, params=params, headers=headers)
+            ss=requests.session()
+            r = ss.get(self.REPORT_URL, params=params, headers=headers, timeout=5)
             try:
                 data = r.json()
                 #print(data)
             except JSONDecodeError:
                 print('JSONDecodeError:{}, retry={}'.format(sid, retry_i))
-                time.sleep(random.uniform(2,5))
+                time.sleep(random.uniform(3,6))
                 continue
             else:
+                #print(r.status_code)
                 break
-            time.sleep(random.uniform(2,5))
+            time.sleep(random.uniform(3,5))
+        
         else:
             # Fail in all retries
             data = {'stat': '', 'data': []}
-
+            
         if data['stat'] == 'OK':
             data['data'] = self.purify(data)
+            
         else:
             data['data'] = []
+            print('data is empty:{}'.format(sid))
             
-        time.sleep(random.uniform(2,8))
+        time.sleep(random.uniform(3,6))
         return data
 
     def _make_datatuple(self, data):
