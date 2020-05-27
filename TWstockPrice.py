@@ -23,10 +23,10 @@ ua='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Ge
 
 headers={'Connection': 'keep-alive',
          'Referer': 'https://www.twse.com.tw/zh/page/trading/exchange/STOCK_DAY.html',
-         'Sec-Fetch-Site': 'same-origin'
+         'Sec-Fetch-Site': 'same-origin',
          'User-Agent': ua,
          'X-Requested-With': 'XMLHttpRequest'}
-#print(headers)
+print(headers)
 
 
 TWSE_BASE_URL = 'http://www.twse.com.tw/'
