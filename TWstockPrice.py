@@ -26,11 +26,11 @@ headers={'Connection': 'keep-alive',
          'Sec-Fetch-Site': 'same-origin',
          'User-Agent': ua,
          'X-Requested-With': 'XMLHttpRequest'}
-print(headers)
+#print(headers)
 
 
-TWSE_BASE_URL = 'http://www.twse.com.tw/'
-TPEX_BASE_URL = 'http://www.tpex.org.tw/'
+TWSE_BASE_URL = 'https://www.twse.com.tw/'
+TPEX_BASE_URL = 'https://www.tpex.org.tw/'
 DATATUPLE = namedtuple('Data', ['date', 'capacity', 'turnover', 'open',
                                 'high', 'low', 'close', 'change', 'transaction'])
 
@@ -57,35 +57,32 @@ class TWSEFetcher(BaseFetcher):
     def __init__(self):
         pass
 
-    def fetch(self, year: int, month: int, sid: str, retry: int=5):
+    def fetch(self, year: int, month: int, sid: str, retry: int=3):
         params = {'response': 'json', 'date': '%d%02d01' % (year, month), 'stockNo': sid}
         
-        for retry_i in range(retry):
-            ss=requests.session()
-            r = ss.get(self.REPORT_URL, params=params, headers=headers, timeout=5)
-            try:
-                data = r.json()
-                #print(data)
-            except JSONDecodeError:
-                print('JSONDecodeError:{}, retry={}'.format(sid, retry_i))
-                time.sleep(random.uniform(3,6))
-                continue
-            else:
-                #print(r.status_code)
-                break
-            time.sleep(random.uniform(3,5))
+        #for retry_i in range(retry):
+        ss=requests.session()
+        ss.mount('https://', requests.adapters.HTTPAdapter(max_retries=retry))
+        r = ss.get(self.REPORT_URL, params=params, headers=headers, timeout=5)
         
-        else:
-            # Fail in all retries
-            data = {'stat': '', 'data': []}
-            
-        if data['stat'] == 'OK':
-            data['data'] = self.purify(data)
-            
-        else:
-            data['data'] = []
-            print('data is empty:{}'.format(sid))
-            
+        try:
+            data = r.json()
+            if data['stat'] == 'OK':
+                data['data'] = self.purify(data)
+            else:
+                data['data'] = []
+                print('data is empty:{}'.format(sid))
+        except JSONDecodeError:
+            #print('JSONDecodeError:{}, retry={}'.format(sid, retry_i))
+            print('JSONDecodeError:{}'.format(sid))
+            #time.sleep(random.uniform(3,6))
+            #pass
+            #continue
+        except requests.exceptions.RequestException as e:
+            print(e)
+        #else:
+            #print(r.status_code)
+        #    break
         time.sleep(random.uniform(3,6))
         return data
 
