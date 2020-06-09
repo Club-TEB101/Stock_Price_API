@@ -26,4 +26,23 @@ function getData() {
 					}
             });
         }
+
+function genDataset() {
+            var chart = echarts.init(document.getElementById('kline_dataset'), 'white', {renderer: 'canvas'});
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Dataset" ,
+                data: $('#form2').serialize(),
+                success: function (result) {
+                    chart.setOption(result);		
+	             },
+                error: function() {
+					alert("not work！");
+					}
+            });
+        }
+
+
 		
