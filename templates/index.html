@@ -41,11 +41,21 @@
 		  <br>
 		  <input type="text" name="start" id="start" placeholder="Start Time">
 		  <input type="text" name="end" id="end" placeholder="End Time">
-		  <input type="text" name="type" id="type" placeholder="Type">
-		  <input type='submit' value="Gen_DataSet" onclick="genClass()">		  
+		  <select id="classtype" name="classtype">
+		　<option value="DoubleBot">DoubleBot</option>
+		　<option value="DoubleTop">DoubleTop</option>
+		　<option value="HeadShoulderBot">HeadShoulderBot</option>
+		　<option value="HeadShoulderTop">HeadShoulderTop</option>
+		  <option value="CongestionUp">CongestionUp</option>
+		  <option value="CongestionUp">CongestionDown</option>	
+		  <input type='submit' value="genDataset" onclick="genDataset()">		  
 		</div>
 	</form>
 	
+	<br>
+	<div id="kline_dataset" style="width: 800px;height:400px;"></div>
+	
+  
 	
   </body>
   <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
