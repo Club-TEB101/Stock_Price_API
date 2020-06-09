@@ -30,9 +30,21 @@
 		</div>
 	</form>
 	
-	<div id="kline" style="width: 600px;height:400px;"></div>
+	<div id="kline" style="width: 800px;height:400px;"></div>
 	
-	 
+    <br>	
+	
+	<form  name="time_interval" id="form2" onsubmit="return false" method="post" action="#">
+		<div class="container">
+		 <div class="div2">
+		  <h5>抓取區間，定義Class，產生DataSet</h5>
+		  <br>
+		  <input type="text" name="start" id="start" placeholder="Start Time">
+		  <input type="text" name="end" id="end" placeholder="End Time">
+		  <input type="text" name="type" id="type" placeholder="Type">
+		  <input type='submit' value="Gen_DataSet" onclick="genClass()">		  
+		</div>
+	</form>
 	
 	
   </body>
