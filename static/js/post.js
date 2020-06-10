@@ -36,7 +36,8 @@ function genDataset() {
                 url: "/Dataset" ,
                 data: $('#form2').serialize(),
                 success: function (result) {
-                    chart.setOption(result);		
+                    chart.setOption(result);
+                    $('#form2')[0].reset();					
 	             },
                 error: function() {
 					alert("not work！");
