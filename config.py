@@ -1,7 +1,7 @@
 #encoding:utf-8
 #DIALECT = 'MySQL'
-USERNAME = 'teb101Club'
-PASSWORD = 'teb101Club'
+USERNAME = 'xxxx'
+PASSWORD = 'xxxxx'
 HOST = '120.97.27.113'
 PORT = '3306'
 DATABASE = 'twstock'
