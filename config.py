@@ -2,7 +2,7 @@
 #DIALECT = 'MySQL'
 USERNAME = 'teb101Club'
 PASSWORD = 'teb101Club'
-HOST = '127.0.0.1'
+HOST = '120.97.27.113'
 PORT = '3306'
 DATABASE = 'twstock'
 
