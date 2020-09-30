@@ -14,6 +14,8 @@ import random
 import requests
 from codes import codes
 
+from requests.packages.urllib3.util.retry import Retry
+
 try:
     from json.decoder import JSONDecodeError
 except ImportError:
@@ -57,16 +59,30 @@ class TWSEFetcher(BaseFetcher):
     def __init__(self):
         pass
 
-    def fetch(self, year: int, month: int, sid: str, retry: int=3):
+    def fetch(self, year: int, month: int, sid: str):
+    #def fetch(self, year: int, month: int, sid: str, retry: int=3):
         params = {'response': 'json', 'date': '%d%02d01' % (year, month), 'stockNo': sid}
         
         #for retry_i in range(retry):
         ss=requests.session()
+        
+        retry = Retry(
+        total=3,
+        read=3,
+        connect=0,
+        backoff_factor=5,
+        status_forcelist=(429, 500, 502, 503, 504),
+        method_whitelist=('GET', 'POST'),
+    )
+  
         ss.mount('https://', requests.adapters.HTTPAdapter(max_retries=retry))
         r = ss.get(self.REPORT_URL, params=params, headers=headers, timeout=5)
-        
+
+        #r = requests.get(self.REPORT_URL, params=params, headers=headers, timeout=5)
+
         try:
             data = r.json()
+
             if data['stat'] == 'OK':
                 data['data'] = self.purify(data)
             else:
@@ -157,7 +173,7 @@ class TPEXFetcher(BaseFetcher):
 
 class Stock(object):
 
-    def __init__(self, sid: str, initial_fetch: bool=True):
+    def __init__(self, sid: str, initial_fetch: bool=False):
         self.sid = sid
         self.fetcher = TWSEFetcher(
         ) if codes[sid].market == '上市' else TPEXFetcher()
