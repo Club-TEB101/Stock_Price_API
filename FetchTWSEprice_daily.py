@@ -6,17 +6,21 @@
 # In[140]:
 
 
-from TWstockPrice import Stock
-import time
-import random
-import os
-from requests.exceptions import ConnectionError
 import json
-from codes import codes
+import os
+import time
 from datetime import datetime
 
+from requests.exceptions import ConnectionError
+
+from TWstockPrice import Stock
+from codes import codes
 from codes import fetch
+
 fetch.__update_codes()
+rootdir='/home/spark/PycharmProjects/Stock_Price_API'
+
+
 
 #False means no data update -- by 0050
 def latestcheck(year, month):
@@ -89,9 +93,12 @@ def dlcheck_daily(path, ymd):
 
 
 if month >9:
-    jsonpath= str(year)+'/'+str(year)+str(month)
+    jsonpath= rootdir+'/'+str(year)+'/'+str(year)+str(month)
 else:
-    jsonpath= str(year)+'/'+str(year)+'0'+str(month)
+    jsonpath= rootdir+'/'+str(year)+'/'+str(year)+'0'+str(month)
+
+
+#print(jsonpath)
 
 
 if not os.path.exists(jsonpath):
@@ -102,7 +109,7 @@ ymd=datetime.strptime(str(datetime.today().date()), "%Y-%m-%d")
 #ymd=datetime(2020,10,7)
 undownload=dlcheck_daily(jsonpath, ymd)
 
-print('undownlowed count:', len(undownload))
+#print('undownlowed count:', len(undownload))
 
 
 stockDict={}
