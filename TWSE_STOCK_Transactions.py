@@ -8,7 +8,7 @@ from airflow.operators.python_operator import PythonOperator
 default_args = {
     'owner': 'Airflow',
     'depends_on_past': False,
-    'email': ['jimmyyang886@gmail.com'],
+    'email': ['xxxx@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
