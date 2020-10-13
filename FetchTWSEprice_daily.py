@@ -14,13 +14,12 @@ from datetime import datetime
 from requests.exceptions import ConnectionError
 
 from TWstockPrice import Stock
+#from TWstockPrice_proxy import Stock
 from codes import codes
 from codes import fetch
 
 fetch.__update_codes()
 rootdir='/home/spark/PycharmProjects/Stock_Price_API'
-
-
 
 #False means no data update -- by 0050
 def latestcheck(year, month):
@@ -162,8 +161,6 @@ while len(undownload)!=0:
                                 json.dump(stockDict, f)
                         else:
                             print('{} already download'.format(filename))
-
-                        
 
         except ConnectionError:
             undownload=dlcheck_daily(jsonpath, ymd)
