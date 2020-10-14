@@ -71,10 +71,11 @@ class TWSEFetcher(BaseFetcher):
                 data['data'] = self.purify(data)
             else:
                 data['data'] = []
-                print('data is empty:{}'.format(sid))
+                #print('data is empty:{}'.format(sid))
         except JSONDecodeError:
             #print('JSONDecodeError:{}, retry={}'.format(sid, retry_i))
             print('JSONDecodeError:{}'.format(sid))
+            data = 'JSONDecodeError'
             #time.sleep(random.uniform(3,6))
             #pass
             #continue
@@ -83,7 +84,7 @@ class TWSEFetcher(BaseFetcher):
         #else:
             #print(r.status_code)
         #    break
-        time.sleep(random.uniform(3,6))
+        #time.sleep(random.uniform(3,6))
         return data
 
     def _make_datatuple(self, data):
